@@ -1,4 +1,4 @@
-package com.bkotharu.springboot.kafka.constants;
+package com.kiran.springboot.kafka.constants;
 
 public class ApplicationConstants {
 

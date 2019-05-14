@@ -1,4 +1,4 @@
-package com.bkotharu.springboot.kafka.config;
+package com.kiran.springboot.kafka.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
-import com.bkotharu.springboot.kafka.constants.ApplicationConstants;
+import com.kiran.springboot.kafka.constants.ApplicationConstants;
 
 @Configuration
 public class KafkaConfig {

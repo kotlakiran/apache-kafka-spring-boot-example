@@ -1,4 +1,4 @@
-package com.bkotharu.springboot.kafka;
+package com.kiran.springboot.kafka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

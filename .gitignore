@@ -1,0 +1,12 @@
+
+*.class
+*.MF
+*.lst
+*.jar
+*.original
+*.prefs
+.project
+target/classes/META-INF/maven/com.bkotharu.springboot.apache.kafka/spring-boot-apache-kafka-example/pom.properties
+target/classes/application.properties
+target/classes/META-INF/maven/com.bkotharu.springboot.apache.kafka/spring-boot-apache-kafka-example/pom.xml
+target/maven-archiver/pom.properties
