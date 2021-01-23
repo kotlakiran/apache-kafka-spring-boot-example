@@ -45,6 +45,7 @@ public class Consumer {
 		 * e.printStackTrace(); } });
 		 */
 		
+		LOGGER.info(" ***** batch records size ****** ={}",records.size());
 		records.forEach(record->{
 			LOGGER.info("Message Consumed with   record.partition ={} ,Thread.currentThread().getName()= {}", record.partition(), Thread.currentThread().getName());
 			TestWorker testWorkeTask=new com.kiran.springboot.kafka.consumer.executor.TestWorker(consumerservice, record);

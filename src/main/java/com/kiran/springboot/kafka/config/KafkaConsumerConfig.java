@@ -18,19 +18,18 @@ import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
 @Configuration
 public class KafkaConsumerConfig {
 
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
-	
+
 	@Value(value = "${kafka.consumer.name}")
 	private String groupName;
-	
+
 	@Value(value = "${kafka.polltimeout}")
 	private String pollTimeout;
-	
+
 	@Value(value = "${kafka.concurrency}")
 	private int concurrency;
 
@@ -42,7 +41,7 @@ public class KafkaConsumerConfig {
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
-		
+
 		return new DefaultKafkaConsumerFactory<>(props);
 	}
 
@@ -51,19 +50,23 @@ public class KafkaConsumerConfig {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		factory.setConcurrency(concurrency);
-		//to consume multiple mesage at a time
+		// to consume multiple mesage at a time
 		factory.setBatchListener(true);
-		//factory.getContainerProperties().setAckMode(AckMode.);
-		/*
-		 * factory.setRecordFilterStrategy(new RecordFilterStrategy<String, String>() {
-		 * 
-		 * @Override public boolean filter(ConsumerRecord<String, String>
-		 * consumerRecord) { JsonObject jsonObject=new
-		 * JsonParser().parse((String)(consumerRecord.value())).getAsJsonObject();
-		 * if(null != jsonObject.get("test") &&
-		 * jsonObject.get("test").getAsString().equalsIgnoreCase("test")) { return
-		 * false; } else { return true; } } });
-		 */    
+		// factory.getContainerProperties().setAckMode(AckMode.);
+
+		factory.setRecordFilterStrategy(new RecordFilterStrategy<String, String>() {
+
+			@Override
+			public boolean filter(ConsumerRecord<String, String> consumerRecord) {
+				JsonObject jsonObject = new JsonParser().parse((String) (consumerRecord.value())).getAsJsonObject();
+				if (null != jsonObject.get("test") && jsonObject.get("test").getAsString().equalsIgnoreCase("test")) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+
 		return factory;
 	}
 }
