@@ -1,13 +1,16 @@
 package com.kiran.springboot.kafka.producer;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import com.kiran.springboot.kafka.constants.ApplicationConstants;
+import com.kiran.springboot.kafka.consumer.executor.TestWorker;
 
 @Component
 public class Producer {
@@ -16,6 +19,8 @@ public class Producer {
 
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
+	
+
 
 	/**
 	 * Sends a plain string message to the topic
@@ -23,8 +28,23 @@ public class Producer {
 	 * @param msg
 	 */
 	public void sendMessage(String msg) {
-		ListenableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(TOPIC_NAME, msg);
-		System.out.println(String.format("Message sent successfully sendResult=%s", sendResult.toString()));
+		
+		
+		try {
+			//System.out.println(Thread.currentThread().getName());
+			for (int i = 0; i < 10000; i++) {			
+			CompletableFuture.runAsync(() -> {	
+				//System.out.println(Thread.currentThread().getName());
+		ListenableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(ApplicationConstants.TOPIC_NAME, msg);
+		
+			  }); 
+			}
+		}
+		
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		//System.out.println(String.format("Message sent successfully sendResult=%s", msg));
 	}
 
 	

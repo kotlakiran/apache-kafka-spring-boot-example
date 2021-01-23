@@ -15,10 +15,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer.AckMode;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kiran.springboot.kafka.constants.ApplicationConstants;
 
 
 @Configuration
@@ -53,20 +51,19 @@ public class KafkaConsumerConfig {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		factory.setConcurrency(concurrency);
-		factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
-		factory.setRecordFilterStrategy(new RecordFilterStrategy<String, String>() {
-
-	            @Override
-	            public boolean filter(ConsumerRecord<String, String> consumerRecord) {
-	            	JsonObject jsonObject=new JsonParser().parse((String)(consumerRecord.value())).getAsJsonObject();
-	            	if(null != jsonObject.get("test") && jsonObject.get("test").getAsString().equalsIgnoreCase("test")) { 
-	                return false;
-	                }
-	            else {
-	                return true;
-	                 }
-	            }   
-	        });	    
+		//to consume multiple mesage at a time
+		factory.setBatchListener(true);
+		//factory.getContainerProperties().setAckMode(AckMode.);
+		/*
+		 * factory.setRecordFilterStrategy(new RecordFilterStrategy<String, String>() {
+		 * 
+		 * @Override public boolean filter(ConsumerRecord<String, String>
+		 * consumerRecord) { JsonObject jsonObject=new
+		 * JsonParser().parse((String)(consumerRecord.value())).getAsJsonObject();
+		 * if(null != jsonObject.get("test") &&
+		 * jsonObject.get("test").getAsString().equalsIgnoreCase("test")) { return
+		 * false; } else { return true; } } });
+		 */    
 		return factory;
 	}
 }
